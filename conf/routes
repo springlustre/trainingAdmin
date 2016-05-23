@@ -1,0 +1,23 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET        /                        @controllers.HomeController.home
+
+# An example controller showing how to use dependency injection
+GET        /count                   @controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET        /message                 @controllers.AsyncController.message
+GET        /admin/gerAllUser        @controllers.UserController.gerAllUser
+
+GET        /data/getVoice           @controllers.DataController.getVoiceByUser(userId:Long)
+GET        /data/getImage           @controllers.DataController.getImageData(userId:Long)
+GET        /data/getTyping          @controllers.DataController.getTypingData(userId:Long)
+GET        /data/getGame            @controllers.DataController.getGameData(userId:Long)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)
+#GET         /prometheus/webjars/*file                        controllers.WebJarAssets.at(file)
+

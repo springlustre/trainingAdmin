@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>后台管理</title>
+
+		<!-- basic styles -->
+		<link href="../stylesheets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../stylesheets/css/font-awesome.min.css" />
+
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="../stylesheets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+
+		<!-- fonts -->
+
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="../stylesheets/css/ace.min.css" />
+		<link rel="stylesheet" href="../stylesheets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="../stylesheets/css/ace-skins.min.css" />
+
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="../stylesheets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+
+		<script src="../javascript/js/ace-extra.min.js"></script>
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="../javascript/js/html5shiv.js"></script>
+		<script src="../javascript/js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="navbar navbar-default" id="navbar">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="icon-leaf"></i>
+							Admin
+						</small>
+					</a><!-- /.brand -->
+				</div><!-- /.navbar-header -->
+
+				<div class="navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						
+					</ul><!-- /.ace-nav -->
+				</div><!-- /.navbar-header -->
+			</div><!-- /.container -->
+		</div>
+
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="main-container-inner">
+
+				<div class="main-content" style="margin-left:10px">
+					<div class="page-content">
+								<div class="row">
+									<div class="col-xs-12">
+										<h3 class="header smaller lighter blue">用户列表</h3>
+										<div class="table-header">
+										</div>
+
+										<div class="table-responsive">
+											<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+												<thead>
+													<tr>
+														<th>用户id</th>
+														<th>姓名</th>
+														<th class="hidden-480">手机号</th>
+
+														<th>
+															<i class="icon-time bigger-110 hidden-480"></i>
+															上次登录时间
+														</th>
+														<th class="hidden-480">操作</th>
+
+
+													</tr>
+												</thead>
+
+												<tbody id="userTable">
+
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div><!-- /.main-content -->
+
+				
+			</div><!-- /.main-container-inner -->
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="icon-double-angle-up icon-only bigger-110"></i>
+			</a>
+		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+		<!-- <![endif]-->
+		<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+		<!--[if !IE]> -->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='../javascript/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='../javascript/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='../javascript/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+	
+		<!-- page specific plugin scripts -->
+		<script src="../javascript/js/jquery.dataTables.min.js"></script>
+		<script src="../javascript/js/jquery.dataTables.bootstrap.js"></script>
+		<script src="../javascript/js/util.js"></script>
+
+		<!-- inline scripts related to this page -->
+
+		<script type="text/javascript">
+
+
+			getAllUser();
+
+	/**我的操作*/
+	function getAllUser(){
+		$.ajax({
+			type: "GET",
+			url: "/admin/gerAllUser",
+			dataType: 'JSON',
+			beforeSend: function(XMLHttpRequest){
+			},
+			success: function(data, textStatus){
+				var errCode=data["errCode"];
+				var cur=data["curPage"];
+				if(errCode==0){
+					updateUserTable(data["data"]);
+				}
+			},
+
+			complete: function(XMLHttpRequest, textStatus){
+
+			},
+			error: function(){//请求出错处理
+			}
+		});
+	}
+
+	function updateUserTable(data){
+		for(var i=0;i<data.length;i++){
+			var html="";
+		  html+='<tr>';
+		  html+='<td>';
+		  html+='<a href="#">'+data[i]["id"]+'</a></td>';
+		  html+='<td class="hidden-480">'+data[i]["name"]+'</td>';
+			html+='<td>'+data[i]["mobile"]+'</td>';
+		  html+='<td class="hidden-480">';
+		  html+='<span>'+formatDate(data[i]["updateTime"])+'</span>';
+		  html+='</td><td>';
+			html+='<button onclick="openData('+1+','+data[i]["id"]+')" > 语音训练  </button> ';
+			html+='<button onclick="openData('+2+','+data[i]["id"]+')" > 鼠标训练  </button> ';
+			html+='<button onclick="openData('+3+','+data[i]["id"]+')" > 键盘训练  </button> ';
+			html+='<button onclick="openData('+4+','+data[i]["id"]+')" > 休闲游戏  </button> ';
+			html+='</td></tr>';
+			$("#userTable").append(html);
+		}
+	}
+
+
+			function openData(type,userId){
+				if(type==1){
+					location.href="voiceList.html?userId="+userId;
+				}else if(type==2){
+					location.href="imageList.html?userId="+userId;
+				}else if(type==3){
+					location.href="typingList.html?userId="+userId;
+				}else if(type==4){
+					location.href="gameList.html?userId="+userId;
+				}
+			}
+
+		</script>
+	</body>
+</html>
