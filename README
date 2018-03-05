@@ -1,4 +1,7 @@
 This is your new Play application
+ 
+the  admin platform for keyBoardTraining project, u can get the user info and software using data here.
+
 =================================
 
 This file will be packaged with your application when using `activator dist`.
